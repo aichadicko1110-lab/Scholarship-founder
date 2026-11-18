@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global Youth Opportunity Hub</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f0f4f8; margin: 0; padding: 15px; color: #222; }
+    .container { max-width: 880px; margin: 0 auto; background: #fff; padding: 24px; border-radius: 12px; box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+    h1 { color: #0a2540; font-size: 24px; margin: 0 0 6px 0; text-align: center; }
+    .subtitle { text-align: center; color: #555; font-size: 14px; margin-bottom: 20px; }
+    
+    .filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 20px; background: #f8fafc; padding: 16px; border-radius: 10px; border: 1px solid #e2e8f0; }
+    label { font-weight: 600; font-size: 12px; color: #334155; margin-bottom: 4px; display: block; text-transform: uppercase; letter-spacing: 0.4px; }
+    select, input { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 14px; background: #fff; color: #1e293b; box-sizing: border-box; }
+    input:focus, select:focus { outline: none; border-color: #007bff; }
+    
+    .results-count { font-weight: bold; font-size: 15px; color: #0a2540; margin-bottom: 12px; }
+    .card { border: 1px solid #e2e8f0; border-radius: 10px; padding: 18px; margin-bottom: 15px; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+    .card h3 { margin: 0 0 10px 0; font-size: 18px; color: #0056b3; }
+    .card p { font-size: 14px; color: #475569; line-height: 1.5; margin: 10px 0; }
+    
+    .badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+    .tag { background: #e0f2fe; color: #0369a1; padding: 4px 9px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+    .tag-green { background: #dcfce7; color: #15803d; }
+    .tag-purple { background: #f3e8ff; color: #7e22ce; }
+    .tag-orange { background: #ffedd5; color: #c2410c; }
+    
+    .eligible-note { font-size: 12px; color: #64748b; margin-top: 8px; font-style: italic; }
+    .btn { display: block; text-align: center; margin-top: 14px; padding: 11px; background: #007bff; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; }
+    .btn:hover { background: #0056b3; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Global Youth Opportunity Hub</h1>
+  <p class="subtitle">Type your country below to see only the scholarships and programs you are eligible for.</p>
+
+  <div class="filter-grid">
+    <div>
+      <label for="userCountry">1. Type Your Country:</label>
+      <input list="countrySuggestions" id="userCountry" placeholder="e.g. Mali, France, India, Brazil..." oninput="filterList()">
+      <datalist id="countrySuggestions">
+        <option value="Mali">
+        <option value="Nigeria">
+        <option value="Kenya">
+        <option value="Ghana">
+        <option value="Senegal">
+        <option value="Rwanda">
+        <option value="South Africa">
+        <option value="Morocco">
+        <option value="Egypt">
+        <option value="France">
+        <option value="United States">
+        <option value="Brazil">
+        <option value="India">
+        <option value="Pakistan">
+        <option value="Indonesia">
+      </datalist>
+    </div>
+
+    <div>
+      <label for="level">2. Academic Level / Grade:</label>
+      <select id="level" onchange="filterList()">
+        <option value="Any">All Levels</option>
+        <option value="High School">High School / Pre-University</option>
+        <option value="Undergraduate">Undergraduate (Bachelor's)</option>
+        <option value="Master's">Master's Degree</option>
+        <option value="PhD">PhD / Doctorate</option>
+        <option value="Fellowship">Youth Summit / Fellowship</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="destination">3. Study Destination:</label>
+      <select id="destination" onchange="filterList()">
+        <option value="Any">Anywhere in the World</option>
+        <option value="USA">United States (USA)</option>
+        <option value="Europe">Europe / UK</option>
+        <option value="Turkey">Turkey</option>
+        <option value="Asia">Asia (China, Japan, etc.)</option>
+        <option value="Africa">Africa</option>
+        <option value="Global">Multiple Countries (Global)</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="funding">4. Funding Type:</label>
+      <select id="funding" onchange="filterList()">
+        <option value="Any">Any Funding</option>
+        <option value="Fully Funded">100% Fully Funded</option>
+        <option value="Partial">Partial / Need-Based Aid</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="english">5. English Test Required?</label>
+      <select id="english" onchange="filterList()">
+        <option value="Any">Doesn't Matter</option>
+        <option value="No">No (Prep Year / Local / Bilingual OK)</option>
+        <option value="Yes">Yes (English Fluency / Test)</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="duration">6. Program Duration:</label>
+      <select id="duration" onchange="filterList()">
+        <option value="Any">Any Duration</option>
+        <option value="Short-Term">Short-Term (Days / Weeks)</option>
+        <option value="1-2 Years">1 to 2 Years</option>
+        <option value="3-4+ Years">3 to 4+ Years</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="count" class="results-count"></div>
+  <div id="list"></div>
+</div>
+
+<script>
+  // List of African countries so Africa-specific scholarships match automatically when a user types an African country
+  const africanCountries = [
+    "algeria", "angola", "benin", "botswana", "burkina faso", "burundi", "cabo verde", "cameroon",
+    "central african republic", "chad", "comoros", "congo", "democratic republic of the congo", "djibouti",
+    "egypt", "equatorial guinea", "eritrea", "eswatini", "ethiopia", "gabon", "gambia", "ghana", "guinea",
+    "guinea-bissau", "ivory coast", "cote d'ivoire", "kenya", "lesotho", "liberia", "libya", "madagascar",
+    "malawi", "mali", "mauritania", "mauritius", "morocco", "mozambique", "namibia", "niger", "nigeria",
+    "rwanda", "sao tome and principe", "senegal", "seychelles", "sierra leone", "somalia", "south africa",
+    "south sudan", "sudan", "tanzania", "togo", "tunisia", "uganda", "zambia", "zimbabwe"
+  ];
+
+  const scholarships = [
+    // --- OPEN TO ALL COUNTRIES WORLDWIDE ---
+    {
+      title: "United World Colleges (UWC) IB Scholarship",
+      eligibleCountries: ["All"],
+      level: "High School",
+      destination: "Global",
+      funding: "Partial",
+      english: "Yes",
+      durationCategory: "1-2 Years",
+      durationText: "2 Years (IB Diploma)",
+      desc: "Open to students worldwide to complete the International Baccalaureate at 18 schools across 4 continents with need-based scholarships.",
+      link: "https://www.uwc.org/"
+    },
+    {
+      title: "Yale Young Global Scholars (YYGS)",
+      eligibleCountries: ["All"],
+      level: "High School",
+      destination: "USA",
+      funding: "Partial",
+      english: "Yes",
+      durationCategory: "Short-Term",
+      durationText: "2 Weeks (Summer)",
+      desc: "Intensive summer academic enrichment program at Yale University for high school students from over 150 countries.",
+      link: "https://globalscholars.yale.edu/"
+    },
+    {
+      title: "Türkiye Bursları (Turkey Scholarships)",
+      eligibleCountries: ["All"],
+      level: "Undergraduate",
+      destination: "Turkey",
+      funding: "Fully Funded",
+      english: "No",
+      durationCategory: "3-4+ Years",
+      durationText: "4-5 Years (Includes 1 yr Turkish prep)",
+      desc: "Open to international students—covers full tuition, monthly stipend, housing, health insurance, and flight tickets.",
+      link: "https://www.turkiyeburslari.gov.tr/"
+    },
+    {
+      title: "Erasmus Mundus Joint Master's (Europe)",
+      eligibleCountries: ["All"],
+      level: "Master's",
+      destination: "Europe",
+      funding: "Fully Funded",
+      english: "Yes",
+      durationCategory: "1-2 Years",
+      durationText: "1-2 Years",
+      desc: "Study in at least two different European universities with full tuition, travel allowance, and a monthly living stipend.",
+      link: "https://www.eacea.ec.europa.eu/scholarships/erasmus-mundus-catalogue_en"
+    },
+    {
+      title: "Chinese Government Scholarship (CSC)",
+      eligibleCountries: ["All"],
+      level: "Undergraduate",
+      destination: "Asia",
+      funding: "Fully Funded",
+      english: "No",
+      durationCategory: "3-4+ Years",
+      durationText: "4-5 Years",
+      desc: "Full scholarships for international students to study Bachelor's, Master's, or PhD programs at top Chinese universities.",
+      link: "https://www.campuschina.org/"
+    },
+    {
+      title: "One Young World Leading Scholarship",
+      eligibleCountries: ["All"],
+      level: "Fellowship",
+      destination: "Global",
+      funding: "Fully Funded",
+      english: "Yes",
+      durationCategory: "Short-Term",
+      durationText: "1 Week (Annual Summit)",
+      desc: "Brings young changemakers (ages 18-35) from every country together at the annual global summit with travel and hotel covered.",
+      link: "https://www.oneyoungworld.com/scholarships"
+    },
+    {
+      title: "US Ivy League & Need-Blind Colleges",
+      eligibleCountries: ["All"],
+      level: "Undergraduate",
+      destination: "USA",
+      funding: "Fully Funded",
+      english: "Yes",
+      durationCategory: "3-4+ Years",
+      durationText: "4 Years",
+      desc: "Top US colleges that meet 100% of demonstrated financial need for international students from any country.",
+      link: "https://educationusa.state.gov/"
+    },
+
+    // --- SPECIFIC COUNTRY / REGION SCHOLARSHIPS ---
+    {
+      title: "African Leadership Academy (ALA) Pre-University",
+      eligibleCountries: ["Africa"], // Matches any African country typed
+      level: "High School",
+      destination: "Africa",
+      funding: "Fully Funded",
+      english: "Yes",
+      durationCategory: "1-2 Years",
+      durationText: "2 Years",
+      desc: "Pre-university leadership & entrepreneurship diploma in South Africa for young African leaders aged 15-18.",
+      link: "https://www.africanleadershipacademy.org/"
+    },
+    {
+      title: "YALI Mandela Washington Fellowship",
+      eligibleCountries: ["Africa"],
+      level: "Fellowship",
+      destination: "USA",
+      funding: "Fully Funded",
+      english: "Yes",
+      durationCategory: "Short-Term",
+      durationText: "6 Weeks",
+      desc: "Brings young leaders from Sub-Saharan Africa (ages 25-35) to US universities for intensive leadership training.",
+      link: "https://www.mandelawashingtonfellowship.org/"
+    },
+    {
+      title: "Ashesi University (Mastercard Foundation)",
+      eligibleCountries: ["Africa"],
+      level: "Undergraduate",
+      destination: "Africa",
+      funding: "Fully Funded",
+      english: "Yes",
+      durationCategory: "3-4+ Years",
+      durationText: "4 Years",
+      desc: "Premier liberal arts and engineering university in Ghana providing full scholarships to bright African youth.",
+      link: "https://www.ashesi.edu.gh/"
+    },
+    {
+      title: "Eiffel Excellence Scholarship Program",
+      eligibleCountries: ["Mali", "Senegal", "Morocco", "India", "Brazil", "Nigeria", "Kenya", "Egypt", "Indonesia"],
+      level: "Master's",
+      destination: "Europe",
+      funding: "Fully Funded",
+      english: "No",
+      durationCategory: "1-2 Years",
+      durationText: "1-2 Years",
+      desc: "French Ministry for Europe and Foreign Affairs scholarship attracting top international students to Master's and PhD programs in France.",
+      link: "https://www.campusfrance.org/en/eiffel-scholarship-program-of-excellence"
+    },
+    {
+      title: "Commonwealth Shared Scholarships",
+      eligibleCountries: ["Nigeria", "Kenya", "Ghana", "Rwanda", "South Africa", "India", "Pakistan"],
+      level: "Master's",
+      destination: "Europe",
+      funding: "Fully Funded",
+      english: "Yes",
+      durationCategory: "1-2 Years",
+      durationText: "1 Year",
+      desc: "Full UK Master's scholarships exclusively for citizens of eligible Commonwealth countries.",
+      link: "https://cscuk.fcdo.gov.uk/"
+    }
+  ];
+
+  function filterList() {
+    const rawCountry = document.getElementById("userCountry").value.trim().toLowerCase();
+    const level = document.getElementById("level").value;
+    const dest = document.getElementById("destination").value;
+    const funding = document.getElementById("funding").value;
+    const english = document.getElementById("english").value;
+    const duration = document.getElementById("duration").value;
+
+    const list = document.getElementById("list");
+    const count = document.getElementById("count");
+    list.innerHTML = "";
+
+    const filtered = scholarships.filter(s => {
+      // Country eligibility check
+      let matchCountry = false;
+      if (rawCountry === "") {
+        matchCountry = true; // Show all if box is empty
+      } else if (s.eligibleCountries.includes("All")) {
+        matchCountry = true;
+      } else if (s.eligibleCountries.includes("Africa") && africanCountries.includes(rawCountry)) {
+        matchCountry = true;
+      } else {
+        matchCountry = s.eligibleCountries.some(c => c.toLowerCase() === rawCountry);
+      }
+
+      const matchLevel = level === "Any" || s.level === level;
+      const matchDest = dest === "Any" || s.destination === dest;
+      const matchFunding = funding === "Any" || s.funding === funding;
+      const matchEnglish = english === "Any" || s.english === english;
+      const matchDuration = duration === "Any" || s.durationCategory === duration;
+
+      return matchCountry && matchLevel && matchDest && matchFunding && matchEnglish && matchDuration;
+    });
+
+    const countryHeading = rawCountry !== ""
+      ? `Showing ${filtered.length} Opportunity / Opportunities for "${document.getElementById("userCountry").value.trim()}"`
+      : `Showing ${filtered.length} Opportunity / Opportunities (Type your country above to personalize)`;
+
+    count.innerText = countryHeading;
+
+    if (filtered.length === 0) {
+      list.innerHTML = `<p style="text-align:center; padding: 20px; color:#64748b;">No exact matches found for those filters. Check your country spelling or set one of the dropdowns back to "Any"!</p>`;
+      return;
+    }
+
+    filtered.forEach(s => {
+      let eligibilityBadge = "🌍 Open Worldwide";
+      if (s.eligibleCountries.includes("Africa")) {
+        eligibilityBadge = "🌍 Eligible: African Countries";
+      } else if (!s.eligibleCountries.includes("All")) {
+        eligibilityBadge = `📍 Eligible Countries: ${s.eligibleCountries.join(", ")}`;
+      }
+
+      list.innerHTML += `
+        <div class="card">
+          <h3>${s.title}</h3>
+          <div class="badges">
+            <span class="tag">${s.level}</span>
+            <span class="tag">To: ${s.destination}</span>
+            <span class="tag tag-green">${s.funding}</span>
+            <span class="tag tag-purple">⏱ ${s.durationText}</span>
+            <span class="tag tag-orange">English Req: ${s.english}</span>
+          </div>
+          <p>${s.desc}</p>
+          <div class="eligible-note">${eligibilityBadge}</div>
+          <a href="${s.link}" target="_blank" rel="noopener noreferrer" class="btn">Visit Official Website & Apply →</a>
+        </div>
+      `;
+    });
+  }
+
+  filterList();
+</script>
+
+</body>
+</html>
